@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
+</head>
+<body>
+    <div style="background:white"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
+    <div class="login-box">
+        <h1 style="color:white">የምስክር ወረቀት ፖርታል / Certification Portal</h1>
+        {% if not data %}
+        <form action="{{ url_for('index') }}" method="POST">
+            <div class="user-box">
+                <input  type="text" name="account" id="account" required="Please" autofocus>
+                <label>የባንክ ሂሳብ ቁጥር / Please Enter Bank account number</label>
+            </div>
+            
+            <button type="submit" name="account">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                አስረክብ / Submit
+            </button> 
+        </form> 
+        {% endif %}
+        {% if data %}
+        <div>
+    
+            <h2 style="color: white;">መረጃዎን ያረጋግጡ / Confirm Your Information</h2>
+            <div style="display: flex; flex-direction: row;">
+                <h3 style="color: white">ሙሉ ስም / Full Name:- </h3>
+                <p style="padding-left: 10px; color: rgb(255, 255, 255); font-size: 18px;">{{ data['full_name'] }}</p>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <h3 style="color: white">የምርጫ ክልል / Constituency:-</h3>
+                <p style="padding-left: 10px; color: rgb(255, 255, 255); font-size: 18px;">{{ data['constituency'] }}</p>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <h3 style="color: white">የሥራ ቦታ / Position:-</h3>
+                <p style="padding-left: 10px; color: rgb(255, 255, 255); font-size: 18px;">{{ data['position'] }}</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: row;">
+                <form action="{{ url_for('confirm') }}">
+                <button type="submit"  style="border-width: 0px; margin-right: 10px;">አዎ / Yes</button>
+                </form>
+                <form action="{{ url_for('update') }}">
+                    <button type="submit"  style="border-width: 0px; ">አይ / No</button>
+                </form>
+            </div>
+            </form>
+        </div>
+        {% endif %}
+        
+    </div>
+    
+</body>
+</html>

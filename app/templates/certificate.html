@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
+
+    <title>Certification</title>
+</head>
+<body >
+        <div style="background:white"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
+
+    {% if data %}<div class="login-box">
+
+        <h1 style=" color: white; text-align: center;">You can now download your Certification </h1>
+        <a href="{{url_for('static', filename=data)}}"
+            style="border-width: 0px; background-color: white; padding: 20px; color: #6e55a3; text-transform: capitalize; cursor: pointer; margin-left: 40%; border-radius: 10px; text-decoration: none; font-size: 16px;">Download</a>
+        </div>
+
+            {% endif %}
+    {% if not data %}
+        <div class="login-box">
+
+        <h3 style="background-color: white; color: red; padding: 10px">Please check you account</h3>
+        </div>
+        
+    {% endif %}
+</body>
+</html>

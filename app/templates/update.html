@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
+
+    <title>Update Information</title>
+</head>
+<body>
+        <div style="background:white"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
+
+    <div class="login-box">
+                <h1 style="color: white">መረጃህን ቀይር / Update your credentials</h1>
+
+    <form action="{{ url_for('update') }}" method="POST">
+        <div class="user-box">
+            <input type="text" name="name" id="name" required="Please" autofocus>
+            <label>ትክክለኛውን ሙሉ ስም ያስገቡ / Please enter correct full name</label>
+        </div>
+        <div class="user-box">
+            <!-- <input type="text" name="position" id="position" required="Please" autofocus>  -->
+            <label for="position">ትክክለኛውን የሥራ ክፍል አስገባ / Please enter your correct position</label>    
+            <br/>        
+            <select style="border-width: 1px; border-color: white; background-color: transparent; width: 100%; margin-top: 40px; padding: 10px" name="position" id="position" aria-dropeffect="move">
+                <option value="ምርጫ ክልል ሰራተኛ">ምርጫ ክልል ሰራተኛ</option>
+                <option value="የውሂብ መቀየሪያ">የውሂብ መቀየሪያ</option>
+                <option value="የዞኑ ምክትል አስተባባሪ">የዞኑ ምክትል አስተባባሪ</option>
+                <option value="የአይሲቲ ቡድን መሪ">የአይሲቲ ቡድን መሪ</option>
+                <option value="የምርጫ ሰራተኛ">የምርጫ ሰራተኛ</option>
+            </select>
+        </div>
+        <!-- <div class="user-box">
+            <input type="text" name="account" id="account" required="Please" autofocus>
+            <label>የባንክ ሂሳብ ቁጥር / Please Enter Bank account number</label>
+        </div> -->
+    
+        <button type="submit" name="account">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            አስረክብ / Submit
+        </button>
+    </form>
+    </div>
+
+    
+</body>
+</html>
