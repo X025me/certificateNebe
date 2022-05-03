@@ -9,9 +9,9 @@
     <title>Update Information</title>
 </head>
 <body>
-        <div style="background:white"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
+        <div style="background:white;"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
 
-    <div class="login-box">
+    <div class="login-box" style="margin-top: 40px;">
                 <h1 style="color: white">መረጃህን ቀይር / Update your credentials</h1>
 
     <form action="{{ url_for('update') }}" method="POST">

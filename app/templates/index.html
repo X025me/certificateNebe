@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NEBE certification </title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
 </head>
 <body>
     <div style="background:white"><img src="{{ url_for('static',filename='logo.jpeg') }}" class="image-logo"></div>
-    <div class="login-box">
-        <h1 style="color:white">የምስክር ወረቀት ፖርታል / Certification Portal</h1>
         {% if not data %}
+        <div class="login-box">
+            <h1 style="color:white;">የምስክር ወረቀት ፖርታል / Certification Portal</h1>
         <form action="{{ url_for('index') }}" method="POST">
             <div class="user-box">
-                <input  type="text" name="account" id="account" required="Please" autofocus>
+                <input max="2"  type="text" name="account" id="account" required="Please" autofocus>
                 <label>የባንክ ሂሳብ ቁጥር / Please Enter Bank account number</label>
             </div>
             
@@ -26,9 +26,12 @@
                 አስረክብ / Submit
             </button> 
         </form> 
+        </div>
         {% endif %}
         {% if data %}
-        <div>
+        <div  >
+            <div class="login-box" style="margin-top: 5%">
+                <h1 style="color:white;">የምስክር ወረቀት ፖርታል / Certification Portal</h1>
     
             <h2 style="color: white;">መረጃዎን ያረጋግጡ / Confirm Your Information</h2>
             <div style="display: flex; flex-direction: row;">

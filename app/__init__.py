@@ -1,16 +1,22 @@
 from enum import unique
 import os
+import datetime
 
 from flask import Flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, session
 )
+import sqlalchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from PIL import Image, ImageDraw, ImageFont
 import pandas as pd
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.engine import URL
 from flask_migrate import Migrate
+import flask 
+
+
 
 
 location = (490, 430)
@@ -69,6 +75,13 @@ class Workers(db.Model):
     approved = db.Column(db.String(20), unique=False, nullable=True)
     edited = db.Column(db.Boolean, nullable=True)
 
+class Log(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ip = db.Column(db.String(200), nullable=True)
+    request_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    account_number = db.Column(db.String(200), nullable=True)
+
+
 
 @app.route('/',  methods=['GET', 'POST'])
 def index():
@@ -94,22 +107,46 @@ def index():
 
     return render_template("/index.html")
 
+@app.route('/import', methods=['GET', 'POST'])
+def imports():
+    data = pd.read_excel ('pole.xlsx') 
+    data = data.rename(columns={'ተ/ቁ': 'index', 'ክልል':'region', 'ዞን': 'zone', 'ምርጫ ክልል': 'constituency', 'ምርጫ ክልል ሰራተኛ ስም': 'full_name', 'የባንክ አካውንት ቁጥር': 'account', 'ሃላፊነት ': 'position' })
+    for item in data.itertuples():
+        accounts = str(item.account)
+        accounts = accounts.replace('.0', '')            
+        h = Workers(bank_account=accounts, region=item.region, full_name=item.full_name, zone=item.zone, constituency=item.constituency, position=item.position)            
+        db.session.add(h)
+        db.session.commit()
+
+    
+    
+
+    return ('Done')
 
 @app.route('/confirm',  methods=['GET', 'POST'])
 def confirm():
+    from datetime import date
+    dater = date.today()
+    today = dater.strftime("%d/%m/%Y")
     # print(session['account'])
-    date = session["account"]
-    datas = Workers.query.get(date)
-    if (datas.position == 'ምርጫ ክልል ሰራተኛ'):
+    dates = session["account"]
+    datas = Workers.query.get(dates)
+    ip_address = flask.request.remote_addr
+
+
+    log = Log(ip=str(ip_address),account_number=dates)
+    db.session.add(log)
+    db.session.commit()
+    if (datas.position == 'ምርጫ ክልል ሰራተኛ '):
         im = Image.open("officer.jpeg")
         d = ImageDraw.Draw(im)
         print(datas.full_name)
         d.text(location,  datas.full_name,
                fill=text_color, font=font)
 
-        d.text(location_date, '18-04-2022', fill=text_color, font=font)
-        im.save("app/static/certificate_" + str(date) + ".pdf")
-        return render_template("/certificate.html", data="certificate_"+str(date)+".pdf")
+        d.text(location_date, today, fill=text_color, font=font)
+        im.save("app/static/certificate_" + str(dates) + ".pdf")
+        return render_template("/certificate.html", data="certificate_"+str(dates)+".pdf")
     elif (datas.position == 'የውሂብ መቀየሪያ'):
         im = Image.open("de.jpeg")
         d = ImageDraw.Draw(im)
@@ -117,9 +154,9 @@ def confirm():
         d.text(location,  datas.full_name,
                fill=text_color, font=font)
 
-        d.text(data_encoder_date, '18-04-2022', fill=text_color, font=font)
-        im.save("app/static/certificate_" + str(date) + ".pdf")
-        return render_template("/certificate.html", data="certificate_"+str(date)+".pdf")
+        d.text(data_encoder_date, today, fill=text_color, font=font)
+        im.save("app/static/certificate_" + str(dates) + ".pdf")
+        return render_template("/certificate.html", data="certificate_"+str(dates)+".pdf")
 
     elif (datas.position == 'የዞኑ ምክትል አስተባባሪ'):
         im = Image.open("dzc.jpeg")
@@ -128,9 +165,9 @@ def confirm():
         d.text(location,  datas.full_name,
                fill=text_color, font=font)
 
-        d.text(location_date, '18-04-2022', fill=text_color, font=font)
-        im.save("app/static/certificate_" + str(date) + ".pdf")
-        return render_template("/certificate.html", data="certificate_"+str(date)+".pdf")
+        d.text(location_date,today, fill=text_color, font=font)
+        im.save("app/static/certificate_" + str(dates) + ".pdf")
+        return render_template("/certificate.html", data="certificate_"+str(dates)+".pdf")
     
     elif (datas.position == 'የአይሲቲ ቡድን መሪ'):
         im = Image.open("ict.jpeg")
@@ -138,9 +175,9 @@ def confirm():
         d.text(location,  datas.full_name,
                fill=text_color, font=font)
 
-        d.text(location_date, '18-04-2022', fill=text_color, font=font)
-        im.save("app/static/certificate_" + str(date) + ".pdf")
-        return render_template("/certificate.html", data="certificate_"+str(date)+".pdf")
+        d.text(location_date, today, fill=text_color, font=font)
+        im.save("app/static/certificate_" + str(dates) + ".pdf")
+        return render_template("/certificate.html", data="certificate_"+str(dates)+".pdf")
 
     elif (datas.position == 'የምርጫ ሰራተኛ'):
         im = Image.open("pw.jpeg")
@@ -148,9 +185,9 @@ def confirm():
         d.text(location,  datas.full_name,
                fill=text_color, font=font)
 
-        d.text(pole_woker_data, '18-04-2022', fill=text_color, font=font)
-        im.save("app/static/certificate_" + str(date) + ".pdf")
-        return render_template("/certificate.html", data="certificate_"+str(date)+".pdf")
+        d.text(pole_woker_data, today, fill=text_color, font=font)
+        im.save("app/static/certificate_" + str(dates) + ".pdf")
+        return render_template("/certificate.html", data="certificate_"+str(dates)+".pdf")
 
 
     # df = pd.read_excel("pole.xlsx") 

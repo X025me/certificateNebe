@@ -14,8 +14,8 @@
     {% if data %}<div class="login-box">
 
         <h1 style=" color: white; text-align: center;">You can now download your Certification </h1>
-        <a href="{{url_for('static', filename=data)}}"
-            style="border-width: 0px; background-color: white; padding: 20px; color: #6e55a3; text-transform: capitalize; cursor: pointer; margin-left: 40%; border-radius: 10px; text-decoration: none; font-size: 16px;">Download</a>
+        <a href="{{url_for('static', filename=data)}}" 
+            style="border-width: 0px; background-color: white; padding: 20px; color: #6e55a3; text-transform: capitalize; cursor: pointer; margin-left: 40%; border-radius: 10px; text-decoration: none; font-size: 16px;" download>Download</a>
         </div>
 
             {% endif %}
@@ -23,6 +23,7 @@
         <div class="login-box">
 
         <h3 style="background-color: white; color: red; padding: 10px">Please check you account</h3>
+        <a href="{{ url_for('index') }}" style="cursor: pointer; color: red; font-size: 14px;">Go back</a>
         </div>
         
     {% endif %}
